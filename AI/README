@@ -1,0 +1,25 @@
+AI/
+│── notebooks/                
+│   │── DataExtraction_and_Visualization.ipynb
+│   │── Rain_Prediction_Model.ipynb
+│
+│── data/                     
+│   │── raw/                  
+│   │   │── Temp.nc
+│   │   │── rain.nc
+│   │   │── wind.nc
+│   │
+│   │── processed/            
+│       │── Final_Climate_Dataset.csv
+│       │── Final_Dataset_classified.csv
+│       │── Final_Dataset_prepared.csv
+│
+│── models/                   
+│   │── best_rf_model.joblib
+│   │── model_comparison.csv
+│   │── predictions_comparison.csv
+│
+│── docs/                     
+│   │── Model_Summery.md
+│
+│── README.md               

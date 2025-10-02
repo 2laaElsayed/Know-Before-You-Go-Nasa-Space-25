@@ -1,5 +1,5 @@
 const JSend = require("../utils/Jsend");
-const Constants = require("../utils/constants");
+const Constants = require("../utils/constant");
 const { logError } = require("../utils/logger");
 
 function errorHandler(err, req, res, next) {

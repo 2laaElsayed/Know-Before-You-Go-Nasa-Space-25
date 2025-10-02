@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 const ValidatorBase = require("./ValidatorBase");
-const User = require("../../models/User");
+const User = require("../../models/Users");
 
 class UserValidator extends ValidatorBase {
     static register() {

@@ -1,16 +1,15 @@
-// require('dotenv').config({ override: true }); 
-// const app = require("../app");
-// const connectDB = require('../config/db');
-// const { scheduleAllJobs } = require("../jobs/Scheduler"); 
+require('dotenv').config({ override: true }); 
+const app = require("../app");
+const connectDB = require('../config/db');
 
-// connectDB()
-// .then(() => {
-//     scheduleAllJobs(); // run only after DB connection is established
-// })
-// .catch(err => {
-//     console.error("MongoDB connection failed:", err);
-// });
+connectDB()
+.then(() => {
+    console.log("MongoDB connected");
+})
+.catch(err => {
+    console.error("MongoDB connection failed:", err);
+});
 
-// module.exports = (req, res ,next) => {
-//     return app(req, res, next);
-// };
+module.exports = (req, res) => {
+    return app(req, res);
+};

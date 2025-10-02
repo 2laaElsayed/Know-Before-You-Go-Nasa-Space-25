@@ -98,6 +98,63 @@ Build a predictive model for estimating weather conditions, particularly rainfal
 ## 9. Temporal Features Added
 
 - Added `month` and `day_of_year` columns to dataset to enable seasonal and temporal analysis.
+---
+## 10. Outputs Provided
+- `Final_Climate_Dataset.csv` — processed dataset  
+- `Rain_Prediction_Model.ipynb` — modeling notebook  
+- `predictions_comparison.csv` — predicted vs actual values  
+- Feature importance plots / figures  
+- Trained Random Forest model: `best_rf_model.joblib`
+
+---
+
+## 11. Optional: XGBoost Results
+- R² = 0.606  
+- RMSE = 0.459  
+- Slightly worse than Random Forest but better than linear regression  
 
 
+## 12. Additional Features Added
+
+### ✅ Humidity & Pressure
+- Integrated **Relative Humidity** and **Surface Pressure** from MERRA-2.  
+- Enhanced dataset with more meteorological predictors.  
+- Feature importance results showed:
+  - Temperature still dominant, but Humidity contributed to improving classification accuracy.  
+
+---
+
+### ✅ Classification Model
+- Built a **Random Forest Classifier** for rainfall events (No Rain, Light, Moderate, Heavy).  
+- **Accuracy:** ~82%  
+- Strong at detecting *No Rain* and *Light Rain*.  
+- Provided **confusion matrix** and **classification report**.  
+
+---
+
+### ✅ Smart Alerts
+- Developed a function `smart_alert(temp, wind, humidity, pressure)` that outputs:  
+  - Rain probability  
+  - Confidence level  
+  - Message:  
+    - `"⚠️ 95% chance of Light Rain"`  
+    - `"✅ Safe: No strong rain signal"`  
+
+---
+
+### ✅ Event Planner
+- User enters event details (date, lat/lon, temperature, wind, humidity, pressure).  
+- System gives risk assessment:  
+  - `"⚠️ High risk of rain – prepare a backup plan"`  
+  - `"✅ Low risk – safe for outdoor events"`  
+
+---
+
+### ✅ Future Work
+- Integrate **real-time nowcasting (0–6 hours)** using streaming NASA IMERG data.  
+- Add new predictors (cloud fraction, soil moisture, ENSO index).  
+- Build **interactive dashboards** for visualization.  
+- Enable **crowdsourcing**: allow users to report rain in real-time to improve model accuracy.  
+
+---
 **End of Report**

@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose');
-const Constants = require('../utils/constants');
+const Constants = require('../utils/constant');
 
 const tokenSchema = new mongoose.Schema({
     token: { type: String, 

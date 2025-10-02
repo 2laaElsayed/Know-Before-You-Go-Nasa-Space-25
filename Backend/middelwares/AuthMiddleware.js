@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const JSend = require("../utils/Jsend");
-const Constants = require("../utils/constants");
-const User = require("../models/User");
+const Constants = require("../utils/constant");
+const User = require("../models/Users");
 const BlacklistedToken = require('../models/BlackListToken');
 
 module.exports = async function AuthMiddleware(req, res, next) {

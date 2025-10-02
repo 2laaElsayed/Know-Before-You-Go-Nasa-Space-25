@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const JSend = require("../utils/Jsend");
-const Constants = require("../utils/Constants");
+const Constants = require("../utils/constants");
 const User = require("../models/User");
 const BlacklistedToken = require('../models/BlackListToken');
 

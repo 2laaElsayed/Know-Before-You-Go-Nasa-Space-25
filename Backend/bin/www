@@ -2,7 +2,7 @@
 require('dotenv').config({ override: true }); 
 
 var app = require('../app');
-var debug = require('debug')('knowledge-vault:server');
+var debug = require('debug')('weather-data:server');
 var http = require('http');
 var connectDB = require('../config/db');
 

@@ -1,6 +1,6 @@
 const { validationResult, query } = require("express-validator");
 const JSend = require("../../utils/Jsend");
-const Constants = require("../../utils/Constants");
+const Constants = require("../../utils/constants");
 const Helpers = require("../../utils/Helper");
 const xss = require("xss");
 

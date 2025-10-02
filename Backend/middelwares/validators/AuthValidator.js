@@ -27,7 +27,13 @@ class UserValidator extends ValidatorBase {
             body("role")
                 .optional()
                 .isIn(["organnizer", "user"])
-                .withMessage("Role must be user or organizer")
+                .withMessage("Role must be user or organizer"),
+
+            body("province")
+                .notEmpty().withMessage("Province is required")
+                .isString().withMessage("Province must be a string")
+                .isLength({ min: 2 }).withMessage("Province name must be at least 2 characters long"),
+
         ]);
     }
 

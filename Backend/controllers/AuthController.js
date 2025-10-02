@@ -11,7 +11,7 @@ const crypto = require("crypto");
 
 registerUser = async function (req, res, next) {
     try {
-        let { username, email, password, role } = req.body;
+        let { username, email, password, role,province } = req.body;
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -25,6 +25,7 @@ registerUser = async function (req, res, next) {
             email,
             password: hashedPassword,
             role,
+            province,
         });
         console.log("Before save:", user);
         await user.save();

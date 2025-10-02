@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema(
       enum: ["organizer", "user"],
       default: "user",
     },
+    province: {
+      type: String,
+      required: true, 
+      trim: true,
+    },
     userId: {
       type: String,
       default: uuidv4,

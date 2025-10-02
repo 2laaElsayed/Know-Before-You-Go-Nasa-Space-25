@@ -6,26 +6,26 @@ import logo from "../../assets/logo_light.jpg";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("error");
+  const [message, setMessage] = useState(""); 
+  const [messageType, setMessageType] = useState("error"); 
   const navigate = useNavigate();
   const { login } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
 
       if (!res.ok || !data.data?.auth?.token) {
         setMessageType("error");
-        setMessage(data.message || "The email or password you entered is incorrect. Please try again");
+        setMessage(data.message || "Login failed ❌");
         return;
       }
 
@@ -39,7 +39,7 @@ export default function Login() {
       setMessage("Login successful ✅");
 
       navigate("/home");
-    } catch {
+    } catch (err) {
       setMessageType("error");
       setMessage("Something went wrong ❌");
     }
@@ -72,6 +72,7 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+
           <input
             type="password"
             placeholder="Password"

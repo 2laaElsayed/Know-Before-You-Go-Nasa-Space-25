@@ -1,57 +1,48 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ForgetPassword() {
+function ForgetPassword() {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("error");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
     try {
       const res = await fetch("/api/auth/forget-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
 
+      const data = await res.json();
       if (!res.ok) {
-        setMessageType("error");
-        setMessage(data.message || "Failed ❌");
+        alert(data.message || "Failed ");
         return;
       }
 
-      setMessageType("info");
-      setMessage("Verification code sent to your email ✅");
+      alert("Verification code sent to your email ");
       navigate("/reset-password");
-    } catch {
-      setMessageType("error");
-      setMessage("Something went wrong ❌");
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Something went wrong ");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#160524] to-[#002E78] dark:from-[#C48EF1] dark:to-[#5076B4] transition-colors duration-500">
       <div className="bg-white/10 dark:bg-black/30 p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-serif text-white mb-6 text-center">Forgot Password</h1>
+        <div className="flex flex-col items-center mb-6">
+          <h1 className="text-2xl font-serif text-white">Forgot Password</h1>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {message && (
-            <div className={`text-sm font-medium ${messageType === "error" ? "text-red-500" : "text-gray-300"}`}>
-              {message}
-            </div>
-          )}
-
           <input
             type="email"
             placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <button
@@ -65,3 +56,5 @@ export default function ForgetPassword() {
     </div>
   );
 }
+
+export default ForgetPassword;

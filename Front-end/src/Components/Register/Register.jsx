@@ -31,7 +31,7 @@ export default function Register() {
       navigate("/verify-email", { state: { email } });
     } catch (err) {
       setMessageType("error");
-      setMessage(err.message || "Registration failed ❌");
+      setMessage("Registration failed ❌");
     }
   };
 

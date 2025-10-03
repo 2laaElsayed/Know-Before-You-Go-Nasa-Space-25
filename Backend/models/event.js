@@ -12,10 +12,9 @@ const eventSchema = new mongoose.Schema(
         type: String, 
         required: true 
     },
-    location: {
-      name: String,
-      lat: Number,
-      lon: Number,
+    province: {
+      type: String,
+      trim: true,
     },
     date: { 
         type: Date, 

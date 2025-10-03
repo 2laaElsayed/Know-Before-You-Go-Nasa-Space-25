@@ -56,14 +56,33 @@ This Folder contains the backend API for **Know Before You Go**:
 
 ---
 
-## Example Responses
+---
 
-### Event Weather (GET `/api/events/:eventId/weather`)
-```json
-{
-  "eventId": "d5b7d9f2-8d4e-4e8e-b3df-cc91ff12ab3d",
-  "location": { "lat": 30.0444, "lon": 31.2357 },
-  "esiScore": 0.82,
-  "recommendations": "Event is safe to proceed",
-  "confidence": 0.91
-}
+## Environment Variables
+
+| Variable      | Description |
+|---------------|-------------|
+| `MONGO_URI`   | MongoDB Atlas connection string |
+| `JWT_SECRET`  | Secret key for JWT signing |
+| `ML_URL`      | URL of Flask ML service (PythonAnywhere / Render) |
+| `SMTP_HOST`   | SMTP server host |
+| `SMTP_PORT`   | SMTP port |
+| `SMTP_USER`   | Email user for sending OTPs |
+| `SMTP_PASS`   | Email password / app password |
+
+---
+
+## Deployment Notes
+
+### Backend (Vercel)
+- Deploy Node backend as serverless or Node app.  
+- Ensure entrypoint `api/index.js` is correct.  
+- Set environment variables in Vercel (`JWT_SECRET`, `MONGO_URI`, `ML_URL`, `SMTP_*`).  
+- MongoDB Atlas: whitelist IP or use `0.0.0.0/0` for testing.  
+- **Do not hardcode** `127.0.0.1:5001` in production → always use `process.env.ML_URL`.  
+
+### ML Service (PythonAnywhere / Render)
+- Upload Flask app (`ml_service.py`), dataset, and trained model.  
+- Install requirements: `pandas`, `numpy`, `scikit-learn`, `joblib`, `Flask`.  
+- Ensure paths to model/CSV are correct.  
+- Update backend `.env` with `ML_URL`.  

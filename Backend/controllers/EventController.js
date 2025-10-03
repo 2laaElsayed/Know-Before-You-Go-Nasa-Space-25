@@ -1,4 +1,4 @@
-const Event = require("../models/Event");
+const Event = require("../models/event");
 const Favorite = require("../models/Favorite");
 const JSend = require("../utils/Jsend");
 const Constants = require("../utils/constant");

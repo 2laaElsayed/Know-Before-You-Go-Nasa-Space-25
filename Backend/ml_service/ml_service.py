@@ -107,7 +107,6 @@ def predict_from_location_endpoint():
     except ValueError as e:
         return jsonify({"error": str(e)}), 500
 
-    # تحديد الأعمدة الصحيحة
     temp_col = None
     wind_col = None
     for c in df.columns:

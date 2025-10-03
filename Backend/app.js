@@ -7,6 +7,7 @@ var cors = require('cors');
 
 var authRouter = require('./routes/auth');
 var eventRouter = require('./routes/event');
+var userRouter = require('./routes/user');
 
 var app = express();
 
@@ -35,6 +36,8 @@ app.get("/", (req, res) => {
 /* Routes */
 app.use('/api/auth', authRouter);
 app.use('/api/events', eventRouter);
+app.use('/api/user', userRouter);
+
 
 app.use(ErrorHandler);
 

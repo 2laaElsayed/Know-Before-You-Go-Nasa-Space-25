@@ -6,9 +6,10 @@ const EventController = require("../controllers/EventController");
 const AuthMiddleware = require("../middelwares/AuthMiddleware"); 
 
 router.post("/create",AuthMiddleware,EventValidator.createEvent(),EventController.createEvent);
+router.put("/edit/:eventId", AuthMiddleware, EventValidator.createEvent(), EventController.editEvent); 
 router.get("/:eventId/weather", AuthMiddleware, EventController.showWeatherForEvent);
-router.get("/all", EventController.getAllEvents);
+router.get("/all",AuthMiddleware, EventController.getAllEvents);
 router.post("/favorite",AuthMiddleware,EventController.addFavorite);
 router.get("/favorites/:userId", AuthMiddleware, EventController.getFavorites);
-
+router.get("/download-csv", AuthMiddleware, EventController.downloadEventsCSV);
 module.exports = router;

@@ -4,6 +4,8 @@ const JSend = require("../utils/Jsend");
 const Constants = require("../utils/constant");
 const axios = require("axios");
 
+const ML_BASE_URL = process.env.ML_URL || "https://tahany.pythonanywhere.com";
+
 const createEvent = async (req, res, next) => {
   try {
     const { title, date, location, recurrence, notes } = req.body;
@@ -66,8 +68,7 @@ const showWeatherForEvent = async (req, res, next) => {
 
     if (date) mlReqBody.date = date.toISOString().slice(0, 10);
 
-    const mlEndpoint =
-      process.env.ML_URL || "http://127.0.0.1:5001/predict_from_location";
+    const mlEndpoint = `${ML_BASE_URL}/predict_from_location`;
     const mlResp = await axios.post(mlEndpoint, mlReqBody);
 
     const {
@@ -137,8 +138,6 @@ const showWeatherForEvent = async (req, res, next) => {
   }
 };
 
-
-
 const getAllEvents = async (req, res, next) => {
   try {
     const events = await Event.find().populate("createdBy", "username email");
@@ -181,7 +180,6 @@ const addFavorite = async (req, res, next) => {
   }
 };
 
-
 const getFavorites = async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -202,7 +200,6 @@ const getFavorites = async (req, res, next) => {
     next(err);
   }
 };
-
 
 module.exports = {
   createEvent,

@@ -3,28 +3,36 @@ import { useNavigate } from "react-router-dom";
 
 function ForgetPassword() {
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState(""); 
+  const [messageType, setMessageType] = useState("error");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleForgetPassword = async (e) => {
     e.preventDefault();
+    setMessage(""); 
+
     try {
-      const res = await fetch("/api/auth/forget-password", {
+      const API_URL = import.meta.env.VITE_API_URL;
+
+      const res = await fetch(`${API_URL}/api/auth/forget-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
-      const data = await res.json();
       if (!res.ok) {
-        alert(data.message || "Failed ");
+        setMessageType("error");
+        setMessage("A problem occurred. Try again."); 
         return;
       }
 
-      alert("Verification code sent to your email ");
+      setMessageType("info");
+      setMessage("A verification code has been sent to your email."); 
       navigate("/reset-password");
     } catch (err) {
-      console.error("Error:", err);
-      alert("Something went wrong ");
+      console.error(err);
+      setMessageType("error");
+      setMessage("A problem occurred. Try again."); 
     }
   };
 
@@ -35,7 +43,7 @@ function ForgetPassword() {
           <h1 className="text-2xl font-serif text-white">Forgot Password</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleForgetPassword} className="space-y-4">
           <input
             type="email"
             placeholder="Enter your email"

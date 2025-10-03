@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
-import logo from "../../assets/logo_light.jpg";
+import logo from "../../assets/logo_light.png"; 
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,38 +12,42 @@ export default function Login() {
   const { login } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  e.preventDefault();
+  setMessage("");
 
-      const data = await res.json();
+  try {
+    const API_URL = import.meta.env.VITE_API_URL;
 
-      if (!res.ok || !data.data?.auth?.token) {
-        setMessageType("error");
-        setMessage(data.message || "Login failed ❌");
-        return;
-      }
+    const res = await fetch(`${API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      login({
-        token: data.data.auth.token,
-        email: data.data.auth.email,
-        username: data.data.auth.username,
-      });
+    const data = await res.json();
 
-      setMessageType("info");
-      setMessage("Login successful ✅");
-
-      navigate("/home");
-    } catch (err) {
+    if (!res.ok || !data.data?.auth?.token) {
       setMessageType("error");
-      setMessage("Something went wrong ❌");
+      setMessage("A problem occurred. Check your email and password and try again.");
+      return;
     }
-  };
+
+    login({
+      token: data.data.auth.token,
+      email: data.data.auth.email,
+      username: data.data.auth.username,
+    });
+
+    setMessageType("info");
+    setMessage("Login successful");
+
+    navigate("/home");
+  } catch (err) {
+    console.error(err);
+    setMessageType("error");
+    setMessage("There was a problem connecting. Try again.");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#160524] to-[#002E78] dark:from-[#C48EF1] dark:to-[#5076B4] transition-colors duration-500">

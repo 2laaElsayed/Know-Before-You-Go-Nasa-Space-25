@@ -21,19 +21,33 @@ export default function Register() {
   ];
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    try {
-      const data = await registerUser(name, email, password, province);
-      setMessageType("info");
-      setMessage("Registration successful! ✅");
+  e.preventDefault();
+  setMessage("");
+  try {
+    const API_URL = import.meta.env.VITE_API_URL;
 
-      navigate("/verify-email", { state: { email } });
-    } catch (err) {
+    const res = await fetch(`${API_URL}/api/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password, province }),
+    });
+
+    if (!res.ok) {
       setMessageType("error");
-      setMessage("Registration failed ❌");
+      setMessage("A problem occurred. Try again.");
+      return;
     }
-  };
+
+    setMessageType("info");
+    setMessage("Registration successful");
+    navigate("/verify-email", { state: { email } });
+  } catch (err) {
+    console.error(err);
+    setMessageType("error");
+    setMessage("A problem occurred. Try again.");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#160524] to-[#002E78] dark:from-[#C48EF1] dark:to-[#5076B4] transition-colors duration-500">

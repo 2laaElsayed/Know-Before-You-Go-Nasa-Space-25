@@ -9,39 +9,41 @@ export default function ResetPassword() {
   const [messageType, setMessageType] = useState("error");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    try {
-      const res = await fetch("/api/auth/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code, newpassword: newPassword }),
-      });
+ const handleResetPassword = async (e) => {
+  e.preventDefault();
+  setMessage("");
+  try {
+    const API_URL = import.meta.env.VITE_API_URL;
 
-      if (!res.ok) {
-        const text = await res.text();
-        setMessageType("error");
-        setMessage("Error: " + text);
-        return;
-      }
+    const res = await fetch(`${API_URL}/api/auth/reset-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, code, newpassword: newPassword }),
+    });
 
-      const data = await res.json();
-      setMessageType("info");
-      setMessage("Password reset successful ✅");
-      navigate("/login");
-    } catch {
+    if (!res.ok) {
       setMessageType("error");
-      setMessage("Something went wrong ❌");
+      setMessage("A problem occurred. Try again.");
+      return;
     }
-  };
+
+    setMessageType("info");
+    setMessage("Password reset successful ");
+    navigate("/login");
+  } catch (err) {
+    console.error(err);
+    setMessageType("error");
+    setMessage("A problem occurred. Try again");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#160524] to-[#002E78] dark:from-[#C48EF1] dark:to-[#5076B4] transition-colors duration-500">
       <div className="bg-white/10 dark:bg-black/30 p-8 rounded-2xl shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-serif text-white mb-6 text-center">Reset Password</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+<form onSubmit={handleResetPassword} className="space-y-4">
           {message && (
             <div className={`text-sm font-medium ${messageType === "error" ? "text-red-500" : "text-gray-300"}`}>
               {message}

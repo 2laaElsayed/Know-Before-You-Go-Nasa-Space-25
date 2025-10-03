@@ -3,45 +3,47 @@ const { v4: uuidv4 } = require("uuid");
 
 const eventSchema = new mongoose.Schema(
   {
-    eventId: { 
-        type: String, 
-        default: uuidv4, 
-        unique: true 
-    },
-    title: { 
-        type: String, 
-        required: true 
-    },
-    province: {
+    eventId: {
       type: String,
-      trim: true,
+      default: uuidv4,
+      unique: true,
     },
-    date: { 
-        type: Date, 
-        required: true 
+    title: {
+      type: String,
+      required: true,
     },
-    timezone: { 
-        type: String, 
-        default: "UTC" 
+    date: {
+      type: Date,
+      required: true,
     },
-    recurrence: { 
-        type: String, 
-        enum: ["none", "daily", "weekly", "monthly"], 
-        default: "none" 
+    timezone: {
+      type: String,
+      default: "UTC",
     },
-    notes: { 
-        type: String 
+    recurrence: {
+      type: String,
+      enum: ["none", "daily", "weekly", "monthly"],
+      default: "none",
     },
-    createdBy: { 
-        type: mongoose.Schema.Types.ObjectId, ref: "User", 
-        required: true 
+    notes: {
+      type: String,
     },
-    esiScore: { 
-        type: Number, 
-        default: null 
-    }, 
-    confidence: { type: String }, 
+    location: {
+      lat: { type: Number, required: true },
+      lon: { type: Number, required: true },
+      name: { type: String, default: "" },
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    esiScore: {
+      type: Number,
+      default: null,
+    },
     recommendations: { type: String },
+    confidence: { type: String },
   },
   { timestamps: true }
 );

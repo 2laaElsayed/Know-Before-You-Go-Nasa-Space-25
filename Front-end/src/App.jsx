@@ -9,11 +9,13 @@ import VerifyEmail from "./Components/Register/VerifyEmail.jsx";
 import ForgetPassword from "./Components/Login/ForgetPassword.jsx";
 import ResetPassword from "./Components/Login/ResetPassword.jsx";
 import NotFound from "./Components/NotFound/NotFound.jsx";
+import MainLayout from "./Components/Layout/MainLayout.jsx";
 
 function App() {
   return (
     <UserContextProvider>
       <Router>
+        <MainLayout>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
@@ -33,6 +35,7 @@ function App() {
 
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </MainLayout>
       </Router>
     </UserContextProvider>
   );

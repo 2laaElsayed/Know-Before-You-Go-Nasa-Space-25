@@ -93,7 +93,7 @@ def predict_from_obs():
     return jsonify({"predictedRain_mm_day": pred})
 
 @app.route("/predict_from_location", methods=["POST"])
-def predict_from_location_endpoint():  # تم تغيير الاسم لتجنب AssertionError
+def predict_from_location_endpoint():  
     payload = request.json or {}
     if "latitude" not in payload or "longitude" not in payload:
         return jsonify({"error": "Provide latitude and longitude"}), 400
@@ -122,7 +122,7 @@ def predict_from_location_endpoint():  # تم تغيير الاسم لتجنب A
         return jsonify({"error": "Could not find temperature or wind columns in CSV."}), 500
 
     temp = float(nearest[temp_col])
-    if temp_col.lower() == "temperature_k":  # تحويل من كلفن لسيلسيوس
+    if temp_col.lower() == "temperature_k":  
         temp = temp - 273.15
 
     wind = float(nearest[wind_col])

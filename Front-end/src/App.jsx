@@ -10,31 +10,44 @@ import ForgetPassword from "./Components/Login/ForgetPassword.jsx";
 import ResetPassword from "./Components/Login/ResetPassword.jsx";
 import NotFound from "./Components/NotFound/NotFound.jsx";
 import MainLayout from "./Components/Layout/MainLayout.jsx";
+import AddEvent from "./Components/Event/AddEvent.jsx";
+import EventDetails from "./Components/Event/EventDetails.jsx";
+import Favorites from "./Components/favorites/Favorites.jsx";
 
 function App() {
   return (
     <UserContextProvider>
       <Router>
         <MainLayout>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/forget-password" element={<ForgetPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/forget-password" element={<ForgetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/create" element={<AddEvent />} />
+            <Route path="/events/:eventId" element={<EventDetails />} />
+            <Route
+              path="/favorites"
+              element={
+                <ProtectedRouting>
+                  <Favorites />
+                </ProtectedRouting>
+              }
+            />
 
-          <Route
-            path="/home"
-            element={
-              <ProtectedRouting>
-                <Home />
-              </ProtectedRouting>
-            }
-          />
+            <Route
+              path="/home"
+              element={
+                <ProtectedRouting>
+                  <Home />
+                </ProtectedRouting>
+              }
+            />
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </MainLayout>
       </Router>
     </UserContextProvider>

@@ -14,7 +14,7 @@ module.exports = {
 
     EXPIRE:{
         JWT: "1h",
-        OTP: "5m",
+        OTP: "15m",
     },
     
 }

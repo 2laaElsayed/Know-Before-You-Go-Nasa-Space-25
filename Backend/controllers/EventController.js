@@ -6,27 +6,25 @@ const axios = require("axios");
 const { Parser } = require("json2csv");
 
 const ML_BASE_URL = process.env.ML_URL || "https://tahany.pythonanywhere.com";
-const provinceCoordinates = require("../utils/provinceCoordinates");
 
 const createEvent = async (req, res, next) => {
   try {
-    const { title, date, province, recurrence, notes } = req.body;
+    const { title, date, location, recurrence, notes } = req.body;
 
-    let lat, lon;
-    if (province && provinceCoordinates[province]) {
-      lat = provinceCoordinates[province].lat;
-      lon = provinceCoordinates[province].lon;
-    } else {
+    if (!location || location.lat == null || location.lon == null) {
       return res.status(Constants.STATUSCODE.BAD_REQUEST).json(
-        JSend.fail({ message: "Province invalid or not provided" })
+        JSend.fail({ message: "Event latitude/longitude missing" })
       );
     }
 
     const event = new Event({
       title,
       date,
-      province,
-      location: { lat, lon, name: province },
+      location: {
+        lat: location.lat,
+        lon: location.lon,
+        name: location.name || "",
+      },
       recurrence: recurrence || "none",
       notes,
       createdBy: req.user.id,
@@ -35,7 +33,10 @@ const createEvent = async (req, res, next) => {
     await event.save();
 
     return res.status(Constants.STATUSCODE.CREATED).json(
-      JSend.success({ message: "Event created successfully", event })
+      JSend.success({
+        message: "Event created successfully",
+        event,
+      })
     );
   } catch (err) {
     next(err);
@@ -53,24 +54,32 @@ const showWeatherForEvent = async (req, res, next) => {
       );
     }
 
-    let { location, date, title, province } = event;
+    const { location, date, title } = event;
 
-    if ((!location || location.lat == null || location.lon == null) && province) {
-      if (provinceCoordinates[province]) {
-        location = { ...provinceCoordinates[province], name: province };
-      } else {
-        return res.status(Constants.STATUSCODE.BAD_REQUEST).json(
-          JSend.fail({ message: "Province coordinates not found" })
-        );
-      }
+    if (!location || location.lat == null || location.lon == null) {
+      return res.status(Constants.STATUSCODE.BAD_REQUEST).json(
+        JSend.fail({ message: "Event latitude/longitude missing" })
+      );
     }
 
-    const mlReqBody = { latitude: location.lat, longitude: location.lon };
+    const mlReqBody = {
+      latitude: location.lat,
+      longitude: location.lon,
+    };
+
     if (date) mlReqBody.date = date.toISOString().slice(0, 10);
 
-    const mlResp = await axios.post(`${ML_BASE_URL}/predict_from_location`, mlReqBody);
+    const mlEndpoint = `${ML_BASE_URL}/predict_from_location`;
+    const mlResp = await axios.post(mlEndpoint, mlReqBody);
 
-    const { predictedRain_mm_day, temperature_used_C, wind_used_ms, esiScore, recommendation, comfortCondition } = mlResp.data;
+    const {
+      predictedRain_mm_day,
+      temperature_used_C,
+      wind_used_ms,
+      esiScore,
+      recommendation,
+      comfortCondition,
+    } = mlResp.data;
 
     event.esiScore = esiScore;
     event.recommendations = recommendation;
@@ -83,11 +92,41 @@ const showWeatherForEvent = async (req, res, next) => {
         date,
         latitude: location.lat,
         longitude: location.lon,
-        rawData: { temperature: temperature_used_C, windSpeed: wind_used_ms, predictedRain_mm_day, esiScore, recommendation, comfortCondition },
+        rawData: {
+          temperature: temperature_used_C,
+          windSpeed: wind_used_ms,
+          predictedRain_mm_day,
+          esiScore,
+          recommendation,
+          comfortCondition,
+        },
         interpreted: {
-          rain: predictedRain_mm_day < 1 ? "No significant rain" : predictedRain_mm_day < 5 ? "Light rain" : predictedRain_mm_day < 20 ? "Moderate rain" : "Heavy rain",
-          temperature: temperature_used_C < 5 ? "Very cold" : temperature_used_C < 15 ? "Cold" : temperature_used_C < 25 ? "Mild" : temperature_used_C < 35 ? "Warm" : "Very hot",
-          wind: wind_used_ms < 2 ? "Calm" : wind_used_ms < 5 ? "Light breeze" : wind_used_ms < 10 ? "Moderate wind" : "Strong wind",
+          rain:
+            predictedRain_mm_day < 1
+              ? "No significant rain"
+              : predictedRain_mm_day < 5
+              ? "Light rain"
+              : predictedRain_mm_day < 20
+              ? "Moderate rain"
+              : "Heavy rain",
+          temperature:
+            temperature_used_C < 5
+              ? "Very cold"
+              : temperature_used_C < 15
+              ? "Cold"
+              : temperature_used_C < 25
+              ? "Mild"
+              : temperature_used_C < 35
+              ? "Warm"
+              : "Very hot",
+          wind:
+            wind_used_ms < 2
+              ? "Calm"
+              : wind_used_ms < 5
+              ? "Light breeze"
+              : wind_used_ms < 10
+              ? "Moderate wind"
+              : "Strong wind",
           esi: esiScore,
           comfortCondition,
           recommendation,
@@ -98,7 +137,6 @@ const showWeatherForEvent = async (req, res, next) => {
     next(err);
   }
 };
-
 
 const getAllEvents = async (req, res, next) => {
   try {

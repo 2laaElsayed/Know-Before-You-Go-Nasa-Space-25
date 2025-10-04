@@ -184,7 +184,8 @@ Huge thanks to our amazing team for making this possible:
 - [Tahany Emad](https://github.com/Tahanyemad16)  
 - [Basmala Saeed](https://github.com/basmalaeltabakh)  
 - [AhmedAbdAl-Aziz](https://github.com/AhmedAbdAl-Aziz)  
-- [Alaa Elsayed](https://github.com/2laaElsayed)  
+- [Alaa Elsayed](https://github.com/2laaElsayed)
+- [Gamal-Abbas](https://github.com/Gamal-Abbas)
 
 
 ---

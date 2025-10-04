@@ -120,7 +120,7 @@ We focus on these **key variables** since they directly impact outdoor planning,
 
 ---
 
-## 9. Results & Evaluation
+## 8. Results & Evaluation
 
 * Compared different ML models for rainfall and temperature predictions.
 * Best-performing model for rainfall: **Random Forest** with F1-score of 0.82.
@@ -128,7 +128,7 @@ We focus on these **key variables** since they directly impact outdoor planning,
 * Visualization and text-based outputs validated by domain experts.
 
 ---
-## 10. Deployment Notes
+## 9. Deployment Notes
 
 ### Backend (Vercel)
 - Deploy Node backend as a serverless function or Node app.  
@@ -149,7 +149,7 @@ We focus on these **key variables** since they directly impact outdoor planning,
 - Set environment variables in Netlify (`API_BASE_URL`, etc.) to point to backend API on Vercel.  
 - Configure redirect rules in `_redirects` file if needed:  
 
-## 11. Acknowledgments 🙌
+## 10. Acknowledgments 🙌
 
 Huge thanks to our amazing team for making this possible:
 
@@ -159,8 +159,8 @@ Huge thanks to our amazing team for making this possible:
 * **Data Science Team** – Data preprocessing, modeling, probability analysis.
 
 
-## 12. Team Contributions
-## 12. Team Contributions
+
+## 11. Team Contributions
 
 - [Tahany Emad](https://github.com/Tahanyemad16)  
 - [Basmala Saeed](https://github.com/basmalaeltabakh)  

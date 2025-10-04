@@ -64,7 +64,8 @@ We focus on these **key variables** since they directly impact outdoor planning,
 ---
 
 ## 4. Website Features
- <img width="1895" height="910" alt="image" src="https://github.com/user-attachments/assets/974e5fb5-dd62-491a-8789-d8748e153b75" />
+<img width="1897" height="805" alt="image" src="https://github.com/user-attachments/assets/7cf7eef0-c0fd-4a1d-904a-519801da446d" />
+
 
 * **Personalized Panel:** User selects location & time.
   <img width="1893" height="850" alt="image" src="https://github.com/user-attachments/assets/2318a177-7bc5-431b-8537-3d55733f6abc" />

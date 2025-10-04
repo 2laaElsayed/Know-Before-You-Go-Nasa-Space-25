@@ -196,7 +196,7 @@ const getFavorites = async (req, res, next) => {
 const editEvent = async (req, res, next) => {
   try {
     const { eventId } = req.params;
-    const { title, date, province, recurrence, notes } = req.body;
+    const { title, date, location, recurrence, notes } = req.body;
 
     const event = await Event.findOne({ eventId });
 
@@ -214,9 +214,18 @@ const editEvent = async (req, res, next) => {
 
     if (title) event.title = title;
     if (date) event.date = date;
-    if (province) event.province = province;
     if (recurrence) event.recurrence = recurrence;
     if (notes) event.notes = notes;
+
+    if (location) {
+      if (location.lat != null && location.lon != null) {
+        event.location.lat = location.lat;
+        event.location.lon = location.lon;
+      }
+      if (location.name !== undefined) {
+        event.location.name = location.name;
+      }
+    }
 
     await event.save();
 

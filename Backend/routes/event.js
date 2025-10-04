@@ -9,7 +9,7 @@ router.post("/create",AuthMiddleware,EventValidator.createEvent(),EventControlle
 router.put("/edit/:eventId", AuthMiddleware, EventValidator.createEvent(), EventController.editEvent); 
 router.get("/:eventId/weather", AuthMiddleware, EventController.showWeatherForEvent);
 router.get("/all",AuthMiddleware, EventController.getAllEvents);
-router.post("/favorite",AuthMiddleware,EventController.addFavorite);
-router.get("/favorites/:userId", AuthMiddleware, EventController.getFavorites);
+router.post("/favorite/:eventId", AuthMiddleware, EventController.addFavorite);
+router.get("/favorites", AuthMiddleware, EventController.getFavorites);
 router.get("/download-csv", AuthMiddleware, EventController.downloadEventsCSV);
 module.exports = router;

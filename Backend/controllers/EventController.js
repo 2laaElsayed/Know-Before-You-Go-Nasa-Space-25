@@ -146,17 +146,19 @@ const getAllEvents = async (req, res, next) => {
     next(err);
   }
 };
+
 const addFavorite = async (req, res, next) => {
   try {
-    const { userId, eventId } = req.body;
+    const userId = req.user.id;  
+    const { eventId } = req.params;
 
     const event = await Event.findOne({ eventId });
-    if (!event) 
+    if (!event)
       return res.status(Constants.STATUSCODE.NOT_FOUND)
                 .json(JSend.fail({ message: "Event not found" }));
 
     const existing = await Favorite.findOne({ user: userId, event: event.eventId });
-    if (existing) 
+    if (existing)
       return res.status(Constants.STATUSCODE.BAD_REQUEST)
                 .json(JSend.fail({ message: "Event already in favorites" }));
 
@@ -171,10 +173,9 @@ const addFavorite = async (req, res, next) => {
 };
 
 
-
 const getFavorites = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id; 
 
     const favs = await Favorite.find({ user: userId });
     const events = await Promise.all(
@@ -184,7 +185,9 @@ const getFavorites = async (req, res, next) => {
       })
     );
 
-    return res.status(Constants.STATUSCODE.SUCCESS).json(JSend.success({ favorites: events }));
+    return res
+      .status(Constants.STATUSCODE.SUCCESS)
+      .json(JSend.success({ favorites: events }));
   } catch (err) {
     next(err);
   }

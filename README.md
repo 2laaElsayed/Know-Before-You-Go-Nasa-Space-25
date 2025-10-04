@@ -1,4 +1,6 @@
 # Know Before You Go 🌦️
+![download (3)](https://github.com/user-attachments/assets/4288f075-626e-419f-8c06-d3b486b12a7d)
+
 
 ## Overview
 

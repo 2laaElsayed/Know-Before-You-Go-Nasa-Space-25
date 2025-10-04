@@ -15,7 +15,7 @@ export default function Favorites() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(`${API_URL}/api/events/favorites/${userId}`, {
+        const res = await fetch(`${API_URL}/api/events/favorites`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

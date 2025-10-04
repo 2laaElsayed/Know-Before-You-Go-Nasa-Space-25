@@ -94,9 +94,8 @@ We focus on these **key variables** since they directly impact outdoor planning,
 
 ## 6. API Endpoints
 
-* `/forecast` → Get probability-based forecast for location/time.
-* `/historical` → Retrieve past weather statistics.
-* `/download` → Export results in CSV/JSON.
+* `/api/events/favorites/:eventId` → Add the event to the logged-in user's favorites.
+* `/api//events/favorites` → Get all events in the logged-in user's favorites.
 
 ---
 

@@ -21,35 +21,37 @@ export default function Register() {
   ];
 
   const handleRegister = async (e) => {
-  e.preventDefault();
-  setMessage("");
-  try {
-    const API_URL = import.meta.env.VITE_API_URL;
+    e.preventDefault();
+    setMessage("");
 
-    const res = await fetch(`${API_URL}/api/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username:name, email, password, province }),
-    });
-const data = await res.json();
-console.log(data); 
+    try {
+      const API_URL = import.meta.env.VITE_API_URL;
 
-    if (!res.ok) {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: name, email, password, province }),
+      });
+
+      const data = await res.json();
+      console.log(data); 
+
+      if (!res.ok) {
+        setMessageType("error");
+        setMessage("A problem occurred. Try again.");
+        return;
+      }
+
+      localStorage.setItem("token", data.data.token); 
+      setMessageType("info");
+      setMessage("Registration successful");
+      navigate("/verify-email", { state: { email } });
+    } catch (err) {
+      console.error(err);
       setMessageType("error");
       setMessage("A problem occurred. Try again.");
-      return;
     }
-
-    setMessageType("info");
-    setMessage("Registration successful");
-    navigate("/verify-email", { state: { email } });
-  } catch (err) {
-    console.error(err);
-    setMessageType("error");
-    setMessage("A problem occurred. Try again.");
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#160524] to-[#002E78] dark:from-[#C48EF1] dark:to-[#5076B4] transition-colors duration-500">
@@ -58,7 +60,7 @@ console.log(data);
 
         <form onSubmit={handleRegister} className="space-y-4">
           {message && (
-            <div className={`text-sm font-medium ${messageType === "error" ? "text-red-500" : "text-gray-300"}`}>
+            <div className={`text-sm font-medium ${messageType === "error" ? "text-red-500" : "text-gray-300"} text-center`}>
               {message}
             </div>
           )}

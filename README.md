@@ -11,7 +11,7 @@ Extreme weather events affect outdoor activities, agriculture, logistics, and pu
 * Visualize **clear, interactive statistics** (time series, probability distributions, heatmaps).
 * Receive **text-based explanations** that are simple and actionable (e.g., *“High risk of heavy rain – consider backup plans”*).
 * **Export results** in CSV or JSON with metadata (units + source).
-* 
+ 
 - [Live Website](https://know-before-you-go.netlify.app/login)  
 - [Postman Collection](https://www.postman.com/wanda1-9363/workspace/weather-api/collection/47777232-475e7c37-200c-41ba-8c5a-abc073bcbe4e?action=share&creator=47777232)  
 

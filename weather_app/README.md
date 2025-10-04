@@ -8,14 +8,14 @@ Features
 
 ⸻
 
-🧠 Tech Stack
+ Tech Stack
 • Flutter — Main framework for building the app.
 • Dart — Programming language.
 • Open-Meteo API — For fetching live weather data.
 • Flutter Map — For map interaction and location picking.
 • Shared Preferences — For local data persistence.
 • Animate_Do — For smooth UI animations.
-🎨 UI Highlights
+ UI Highlights
 • Animated splash screen with bouncing cloud
 • Gradient background for all main screens
 • Responsive weather cards and forecast list
@@ -23,7 +23,7 @@ Features
 
 ⸻
 
-🧊 Future Improvements
+ Future Improvements
 • Add voice recognition for weather queries
 • Add notifications for severe weather alerts
 • Improve localization and add Arabic translation

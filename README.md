@@ -11,6 +11,9 @@ Extreme weather events affect outdoor activities, agriculture, logistics, and pu
 * Visualize **clear, interactive statistics** (time series, probability distributions, heatmaps).
 * Receive **text-based explanations** that are simple and actionable (e.g., *“High risk of heavy rain – consider backup plans”*).
 * **Export results** in CSV or JSON with metadata (units + source).
+* 
+- [Live Website](https://know-before-you-go.netlify.app/login)  
+- [Postman Collection](https://www.postman.com/wanda1-9363/workspace/weather-api/collection/47777232-475e7c37-200c-41ba-8c5a-abc073bcbe4e?action=share&creator=47777232)  
 
 ### Example Use Case
 
@@ -125,8 +128,28 @@ We focus on these **key variables** since they directly impact outdoor planning,
 * Visualization and text-based outputs validated by domain experts.
 
 ---
+## 10. Deployment Notes
 
-## 10. Acknowledgments 🙌
+### Backend (Vercel)
+- Deploy Node backend as a serverless function or Node app.  
+- Ensure entrypoint `api/index.js` is correct.  
+- Set environment variables in Vercel (`JWT_SECRET`, `MONGO_URI`, `ML_URL`, `SMTP_*`).  
+- MongoDB Atlas: whitelist IPs or use `0.0.0.0/0` for testing.  
+- **Do not hardcode** `127.0.0.1:5001` in production → always use `process.env.ML_URL`.  
+
+### ML Service (PythonAnywhere)
+- Upload Flask app (`ml_service.py`), dataset, and trained model.  
+- Install requirements: `pandas`, `numpy`, `scikit-learn`, `joblib`, `Flask`.  
+- Ensure paths to model/CSV are correct.  
+- Update backend `.env` with `ML_URL`.  
+
+### Frontend (Netlify)
+- Build frontend (React/Vue/Angular) with production command (`npm run build` or framework equivalent).  
+- Deploy build folder to Netlify.  
+- Set environment variables in Netlify (`API_BASE_URL`, etc.) to point to backend API on Vercel.  
+- Configure redirect rules in `_redirects` file if needed:  
+
+## 11. Acknowledgments 🙌
 
 Huge thanks to our amazing team for making this possible:
 
@@ -136,7 +159,13 @@ Huge thanks to our amazing team for making this possible:
 * **Data Science Team** – Data preprocessing, modeling, probability analysis.
 
 
-## 11. Team Contributions
+## 12. Team Contributions
+## 12. Team Contributions
+
+- [Tahany Emad](https://github.com/Tahanyemad16)  
+- [Basmala Saeed](https://github.com/basmalaeltabakh)  
+- [AhmedAbdAl-Aziz](https://github.com/AhmedAbdAl-Aziz)  
+- [Alaa Elsayed](https://github.com/2laaElsayed)  
 
 
 ---

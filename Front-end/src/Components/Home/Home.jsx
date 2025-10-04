@@ -222,6 +222,15 @@ export default function Home() {
           </button>
         </div>
       </div>
+      <div className="mb-14 text-center">
+        <h1 className="text-4xl font-extrabold mb-3 tracking-wide">
+          Welcome to <span className="text-yellow-300">Know Before You Go</span>
+        </h1>
+        <p className="text-base text-gray-800 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          Your smart assistant to check the weather, plan your events, and stay
+          prepared 🌦️
+        </p>
+      </div>
 
       {/* Favorites Section */}
       {showFavorites && (
@@ -302,6 +311,7 @@ export default function Home() {
           </div>
         )}
       </div>
+      
 
       {/* Logout */}
       <div className="text-center mt-16">

@@ -62,8 +62,26 @@ We focus on these **key variables** since they directly impact outdoor planning,
    * Machine learning algorithms (e.g., Random Forest, ARIMA, LSTM for sequential patterns).
 
 ---
+## 4. Mobile Application Overview 
 
-## 4. Website Features
+We developed a **cross-platform mobile application** using **Flutter** to provide users with on-the-go access to weather insights.  
+The app allows users to:  
+- Select a location and time directly from their mobile device.  
+- View personalized forecasts and interactive charts.  
+- Receive simplified text-based recommendations (e.g., *"High chance of heavy rain – consider carrying an umbrella"*).  
+
+This ensures accessibility and usability beyond the web dashboard, making forecasts available anytime, anywhere.  
+
+
+https://github.com/user-attachments/assets/279083fc-11bf-4ecb-b8b9-9196c24e1d6a
+
+
+ 
+
+
+
+---
+## 5. Website Features
 <img width="1897" height="805" alt="image" src="https://github.com/user-attachments/assets/7cf7eef0-c0fd-4a1d-904a-519801da446d" />
 
 
@@ -87,7 +105,7 @@ We focus on these **key variables** since they directly impact outdoor planning,
 
 ---
 
-## 5. Machine Learning Models
+## 6. Machine Learning Models
 
 * **Classification models:** To classify comfort levels (e.g., Comfortable, Uncomfortable, Extreme).
 * **Regression models:** To estimate numerical values (rainfall amount, temperature range).
@@ -96,14 +114,14 @@ We focus on these **key variables** since they directly impact outdoor planning,
 
 ---
 
-## 6. API Endpoints
+## 7. API Endpoints
 
 * `/api/events/favorites/:eventId` → Add the event to the logged-in user's favorites.
 * `/api//events/favorites` → Get all events in the logged-in user's favorites.
 
 ---
 
-## 7. Architecture
+## 8. Architecture
 <img width="1267" height="766" alt="image" src="https://github.com/user-attachments/assets/5de2aa5c-6443-4493-9f23-003973110229" />
 
 * **Frontend:** React (interactive dashboard).
@@ -121,7 +139,7 @@ We focus on these **key variables** since they directly impact outdoor planning,
 
 ---
 
-## 8. Results & Evaluation
+## 9. Results & Evaluation
 
 * Compared different ML models for rainfall and temperature predictions.
 * Best-performing model for rainfall: **Random Forest** with F1-score of 0.82.
@@ -129,7 +147,7 @@ We focus on these **key variables** since they directly impact outdoor planning,
 * Visualization and text-based outputs validated by domain experts.
 
 ---
-## 9. Deployment Notes
+## 10. Deployment Notes
 
 ### Backend (Vercel)
 - Deploy Node backend as a serverless function or Node app.  
@@ -150,7 +168,7 @@ We focus on these **key variables** since they directly impact outdoor planning,
 - Set environment variables in Netlify (`API_BASE_URL`, etc.) to point to backend API on Vercel.  
 - Configure redirect rules in `_redirects` file if needed:  
 
-## 10. Acknowledgments 🙌
+## 11. Acknowledgments 🙌
 
 Huge thanks to our amazing team for making this possible:
 
@@ -161,7 +179,7 @@ Huge thanks to our amazing team for making this possible:
 
 
 
-## 11. Team Contributions
+## 12. Team Contributions
 
 - [Tahany Emad](https://github.com/Tahanyemad16)  
 - [Basmala Saeed](https://github.com/basmalaeltabakh)  
@@ -170,7 +188,7 @@ Huge thanks to our amazing team for making this possible:
 
 
 ---
-## 12. References
+## 13. References
 
 - NASA GPM IMERG: https://gpm.nasa.gov/data/imerg
 - NASA MERRA-2: https://gmao.gsfc.nasa.gov/reanalysis/MERRA-2/

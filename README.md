@@ -172,10 +172,10 @@ https://github.com/user-attachments/assets/279083fc-11bf-4ecb-b8b9-9196c24e1d6a
 
 Huge thanks to our amazing team for making this possible:
 
-* **Frontend ** – UI/UX, interactive graphs, dashboards.
-* **Backend ** – APIs, data pipeline, integration.
-* **Mobile ** – Mobile app interface for on-the-go forecasts.
-* **Data Science ** – Data preprocessing, modeling, probability analysis.
+* **Frontend** – UI/UX, interactive graphs, dashboards.
+* **Backend** – APIs, data pipeline, integration.
+* **Mobile** – Mobile app interface for on-the-go forecasts.
+* **Data Science** – Data preprocessing, modeling, probability analysis.
 
 
 

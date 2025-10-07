@@ -135,12 +135,8 @@ def predict_from_location_endpoint():
             "distance_m": float(nearest["__dist__"])
         }
     })
-
 @app.route("/predict_next_days", methods=["POST"])
 def predict_next_days():
-    """
-    Predict rainfall for the next N days (default 3) based on latitude & longitude.
-    """
     payload = request.json or {}
     if "latitude" not in payload or "longitude" not in payload:
         return jsonify({"error":"Provide latitude and longitude"}), 400
@@ -164,10 +160,19 @@ def predict_next_days():
         return jsonify({"error":"Could not find temperature or wind columns in CSV."}), 500
 
     temp = float(nearest[temp_col])
-    if temp_col.lower() == "temperature_k": temp -= 273.15
+    if temp_col.lower() == "temperature_k": 
+        temp -= 273.15
     wind = float(nearest[wind_col])
 
-    feat = pd.DataFrame([{"temperature_C": temp, "wind_speed_ms": wind}] * days)
+    import numpy as np
+    features = []
+    for _ in range(days):
+        daily_temp = temp + np.random.uniform(-1.0, 1.0)  # ±1 درجة مئوية
+        daily_wind = wind + np.random.uniform(-0.3, 0.3)  # ±0.3 م/ث
+        features.append({"temperature_C": daily_temp, "wind_speed_ms": daily_wind})
+
+    feat = pd.DataFrame(features)
+
     preds = model.predict(feat)
     preds = [max(0.0, float(p)) for p in preds]
 
@@ -177,6 +182,7 @@ def predict_next_days():
         "days": days,
         "predictedRain_mm": preds
     })
+
 
 # -----------------------
 # Entry point for local testing or WSGI

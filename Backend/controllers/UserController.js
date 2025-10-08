@@ -51,6 +51,79 @@ const getThreeDayForecastForUser = async (req, res, next) => {
     next(err);
   }
 };
-module.exports = { 
-    getThreeDayForecastForUser 
+const showProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(Constants.STATUSCODE.NOT_FOUND).json(
+        JSend.fail({ message: "User not found" })
+      );
+    }
+
+    return res.status(Constants.STATUSCODE.SUCCESS).json(
+      JSend.success({ user })
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
+const editProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const updates = req.body;
+
+    delete updates.password;
+    delete updates.email;
+    delete updates.role;
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+      runValidators: true,
+      select: "-password"
+    });
+
+    if (!updatedUser) {
+      return res.status(Constants.STATUSCODE.NOT_FOUND).json(
+        JSend.fail({ message: "User not found" })
+      );
+    }
+
+    return res.status(Constants.STATUSCODE.SUCCESS).json(
+      JSend.success({
+        message: "Profile updated successfully",
+        user: updatedUser
+      })
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const deletedUser = await User.findByIdAndDelete(userId);
+    if (!deletedUser) {
+      return res.status(Constants.STATUSCODE.NOT_FOUND).json(
+        JSend.fail({ message: "User not found" })
+      );
+    }
+
+    return res.status(Constants.STATUSCODE.SUCCESS).json(
+      JSend.success({ message: "Profile deleted successfully" })
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  getThreeDayForecastForUser,
+  showProfile,
+  editProfile,
+  deleteProfile,
 };

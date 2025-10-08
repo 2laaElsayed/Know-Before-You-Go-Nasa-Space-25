@@ -262,6 +262,33 @@ const downloadEventsCSV = async (req, res, next) => {
   }
 };
 
+const deleteEvent = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+
+    const event = await Event.findOne({ eventId });
+    if (!event) {
+      return res.status(Constants.STATUSCODE.NOT_FOUND).json(
+        JSend.fail({ message: "Event not found" })
+      );
+    }
+
+    if (event.createdBy.toString() !== req.user.id) {
+      return res.status(Constants.STATUSCODE.UNAUTHORIZED).json(
+        JSend.fail({ message: "You are not authorized to delete this event" })
+      );
+    }
+
+    await Event.deleteOne({ eventId });
+
+    return res.status(Constants.STATUSCODE.SUCCESS).json(
+      JSend.success({ message: "Event deleted successfully" })
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createEvent,
   getAllEvents,
@@ -270,4 +297,5 @@ module.exports = {
   showWeatherForEvent,
   editEvent,
   downloadEventsCSV,
+  deleteEvent,
 };

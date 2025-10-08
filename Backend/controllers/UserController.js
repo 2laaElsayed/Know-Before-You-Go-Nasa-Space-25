@@ -75,7 +75,6 @@ const editProfile = async (req, res, next) => {
     const userId = req.user.id;
     const updates = req.body;
 
-    // منع تعديل الحقول الحساسة
     delete updates.password;
     delete updates.email;
     delete updates.role;

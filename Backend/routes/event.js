@@ -12,4 +12,5 @@ router.get("/all",AuthMiddleware, EventController.getAllEvents);
 router.post("/favorite/:eventId", AuthMiddleware, EventController.addFavorite);
 router.get("/favorites", AuthMiddleware, EventController.getFavorites);
 router.get("/download-csv", AuthMiddleware, EventController.downloadEventsCSV);
+router.delete("/delete-event/:eventId", AuthMiddleware, EventController.deleteEvent);
 module.exports = router;

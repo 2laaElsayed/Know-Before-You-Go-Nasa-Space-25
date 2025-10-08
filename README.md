@@ -11,8 +11,7 @@ Extreme weather events affect outdoor activities, agriculture, logistics, and pu
 * Visualize **clear, interactive statistics** (time series, probability distributions, heatmaps).
 * Receive **text-based explanations** that are simple and actionable (e.g., *“High risk of heavy rain – consider backup plans”*).
 * **Export results** in CSV or JSON with metadata (units + source).
- 
-- [Live Website](https://know-before-you-go.netlify.app/login)  
+  
 - [Postman Collection](https://www.postman.com/wanda1-9363/workspace/weather-api/collection/47777232-475e7c37-200c-41ba-8c5a-abc073bcbe4e?action=share&creator=47777232)  
 
 ### Example Use Case
@@ -82,16 +81,21 @@ https://github.com/user-attachments/assets/279083fc-11bf-4ecb-b8b9-9196c24e1d6a
 
 ---
 ## 5. Website Features
-<img width="1897" height="805" alt="image" src="https://github.com/user-attachments/assets/7cf7eef0-c0fd-4a1d-904a-519801da446d" />
+
+![photo_2025-10-09_00-07-54](https://github.com/user-attachments/assets/2e06d3fd-68f4-492d-a37a-f889de66a369)
 
 
 * **Personalized Panel:** User selects location & time.
-  <img width="1893" height="850" alt="image" src="https://github.com/user-attachments/assets/2318a177-7bc5-431b-8537-3d55733f6abc" />
+ 
+![photo_2025-10-09_00-08-00](https://github.com/user-attachments/assets/450b033b-8f17-4678-9a35-e6f9cf1c4c4e)
 
   
 * **Interactive Visualizations:**
-<img width="1251" height="845" alt="image" src="https://github.com/user-attachments/assets/e3d58078-43c0-4fcf-968d-1103cfd0752e" />
-<img width="1782" height="747" alt="image" src="https://github.com/user-attachments/assets/5d1ad7fc-3862-42ce-8ace-bdc52025a1d4" />
+
+
+
+![WhatsApp Image 2025-10-08 at 21 24 57_db40f085](https://github.com/user-attachments/assets/cd803994-0908-48cd-97c6-79f8522748bf)
+![WhatsApp Image 2025-10-08 at 21 24 57_afc322ee](https://github.com/user-attachments/assets/b907bc23-90df-4e71-91a1-9dc450f74c1b)
 
 
 

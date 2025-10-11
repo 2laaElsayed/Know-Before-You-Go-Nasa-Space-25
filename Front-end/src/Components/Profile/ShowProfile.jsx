@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 export default function ShowProfile() {
   const navigate = useNavigate();
 
-  // بيانات استاتيك
   const [profile] = useState({
     username: "alaa elsayed",
     email: "alaaelssayed23@gmail.com",

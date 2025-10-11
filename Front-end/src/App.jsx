@@ -39,18 +39,7 @@ function App() {
             <Route path="/profile" element={<ProtectedRouting><ShowProfile /></ProtectedRouting>} />
             <Route path="/profile/edit" element={<ProtectedRouting><EditProfile /></ProtectedRouting>} />
             <Route path="/event" element={<ProtectedRouting>< EventDetailsStatic/></ProtectedRouting>} />
-
-
-
-            <Route
-              path="/home"
-              element={
-                <ProtectedRouting>
-                  <Home />
-                </ProtectedRouting>
-              }
-            />
-
+            <Route path="/home" element={<ProtectedRouting><Home /></ProtectedRouting>}/>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </MainLayout>

@@ -79,7 +79,6 @@ export default function CreateEvent() {
 
       <div className="flex flex-col lg:flex-row gap-8 w-full max-w-6xl bg-white/30 dark:bg-white/5 backdrop-blur-lg p-8 rounded-3xl shadow-2xl border border-white/10 transition-all">
         
-        {/* Left Side - Map */}
         <div className="w-full lg:w-1/2 h-80 lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
           <MapContainer
             center={[30.0, 31.0]}
@@ -94,7 +93,6 @@ export default function CreateEvent() {
           </MapContainer>
         </div>
 
-        {/* Right Side - Form */}
         <form
           onSubmit={handleSubmit}
           className="w-full lg:w-1/2 flex flex-col gap-5 justify-between"

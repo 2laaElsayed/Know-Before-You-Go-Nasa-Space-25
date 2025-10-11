@@ -32,13 +32,11 @@ export default function Home() {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Redirect if not logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/login");
   }, [navigate]);
 
-  // ------------ Events / Favorites API calls ------------
   
   const fetchEvents = async () => {
     setLoadingEvents(true);
@@ -133,7 +131,6 @@ export default function Home() {
     }
   };
 
-  // ------------ Weather API (3 days) ------------
   useEffect(() => {
     const fetchWeather = async () => {
       setLoadingWeather(true);
@@ -165,13 +162,11 @@ export default function Home() {
   const getWeatherIcon = (rain) =>
     rain < 1 ? sunImg : rain < 5 ? cloudImg : rainImg;
 
-  // memoized current day value
   const todayRain = useMemo(() => (weather[0] ? weather[0].rain : "0.00"), [weather]);
 
   return (
     <div className="relative min-h-screen font-sans p-6 bg-gradient-to-br from-[#5076B4] to-[#C48EF1] text-gray-900 dark:from-[#002E78] dark:to-[#160524] dark:text-white">
 
-      {/* ========== Sidebar ========== */}
       <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 hidden sm:flex flex-col gap-4 bg-white/10 backdrop-blur-md p-3 rounded-2xl shadow-lg">
         <button
           onClick={() => navigate("/profile")}
@@ -222,7 +217,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* ========== Header ========== */}
       <div className="mb-8 text-center">
         <img src={cloudLogo} alt="logo" className="h-16 mx-auto mb-3 drop-shadow-lg" />
         <h1 className="text-4xl font-extrabold mb-2 tracking-wide">
@@ -233,9 +227,8 @@ export default function Home() {
         </p>
       </div>
 
-      {/* ========== Weather Section ========== */}
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        {/* Today’s Weather */}
+
         <div className="bg-white/90 dark:bg-white/5 rounded-2xl p-6 shadow-xl h-[500px] flex flex-col justify-center items-center">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FFE29F] to-[#FFD37E] flex items-center justify-center shadow-md mb-3">
             <img src={sunImg} alt="sun" className="h-10" />
@@ -245,7 +238,6 @@ export default function Home() {
           <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">Sunny and clear skies</p>
         </div>
 
-        {/* Temperature Wave */}
         <div className="lg:col-span-2 bg-white/90 dark:bg-white/5 rounded-2xl p-8 shadow-xl flex flex-col items-center justify-center h-[500px]">
           <h3 className="font-semibold mb-6 text-lg">Next 3 Days Temperature</h3>
           <svg width="100%" height="160" viewBox="0 0 300 100" preserveAspectRatio="none">
@@ -273,7 +265,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ========== Events / Favorites ========== */}
       <div className="max-w-5xl mx-auto mt-10">
         {showEvents && (
           <section className="mb-8">

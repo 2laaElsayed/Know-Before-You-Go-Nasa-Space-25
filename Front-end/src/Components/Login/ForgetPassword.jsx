@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 function ForgetPassword() {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState(""); 
+  const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("error");
   const navigate = useNavigate();
 
   const handleForgetPassword = async (e) => {
     e.preventDefault();
-    setMessage(""); 
+    setMessage("");
 
     try {
       const API_URL = import.meta.env.VITE_API_URL;
@@ -22,17 +22,17 @@ function ForgetPassword() {
 
       if (!res.ok) {
         setMessageType("error");
-        setMessage("A problem occurred. Try again."); 
+        setMessage("A problem occurred. Try again.");
         return;
       }
 
       setMessageType("info");
-      setMessage("A verification code has been sent to your email."); 
+      setMessage("A verification code has been sent to your email.");
       navigate("/reset-password");
     } catch (err) {
       console.error(err);
       setMessageType("error");
-      setMessage("A problem occurred. Try again."); 
+      setMessage("A problem occurred. Try again.");
     }
   };
 

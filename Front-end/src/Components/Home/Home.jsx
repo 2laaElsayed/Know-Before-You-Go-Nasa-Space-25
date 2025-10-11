@@ -37,7 +37,7 @@ export default function Home() {
     if (!token) navigate("/login");
   }, [navigate]);
 
-  
+
   const fetchEvents = async () => {
     setLoadingEvents(true);
     setError(null);

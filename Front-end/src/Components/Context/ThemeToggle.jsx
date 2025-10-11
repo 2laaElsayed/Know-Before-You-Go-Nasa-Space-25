@@ -22,7 +22,7 @@ function ThemeToggle() {
       </div>
       
       <span className="text-lg text-white font-serif select-none">
-        {theme === 'light' ? 'Cloudy!' : 'Sunny!'}
+        {theme === 'light' ? 'Cloudy' : 'Sunny'}
       </span>
     </div>
   );

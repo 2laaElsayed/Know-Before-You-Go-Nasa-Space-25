@@ -1,189 +1,205 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FaCalendarAlt, FaMapMarkerAlt, FaSync, FaPencilAlt, FaTimes } from "react-icons/fa";
+import { MapContainer, TileLayer, useMapEvents, Marker } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
-// Alert Box Component
-const AlertBox = ({ message, type, onClose }) => {
-  const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
-  const icon = type === "success" ? "✅" : "❌";
-  return (
-    <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 ${bgColor} text-white p-4 rounded-lg shadow-xl z-50 flex items-center gap-4`}>
-      <span className="text-xl">{icon}</span>
-      <p className="font-medium">{message}</p>
-      <button onClick={onClose} className="text-white opacity-75 hover:opacity-100 transition">
-        <FaTimes />
-      </button>
-    </div>
-  );
-};
+function LocationMarker({ position, onSelect }) {
+  const [markerPos, setMarkerPos] = useState(position || null);
+
+  useMapEvents({
+    click(e) {
+      const { lat, lng } = e.latlng;
+      setMarkerPos({ lat, lng });
+      onSelect({ lat, lng });
+    },
+  });
+
+  return markerPos ? <Marker position={markerPos} /> : null;
+}
 
 export default function EditEvent() {
+const { eventId } = useParams();
   const navigate = useNavigate();
-  const { eventId } = useParams();
-
-  const [formData, setFormData] = useState({
-    title: "",
-    date: "",
-    province: "Cairo",
-    recurrence: "none",
-    notes: "",
-  });
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [recurrence, setRecurrence] = useState("none");
+  const [notes, setNotes] = useState("");
+  const [location, setLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [alert, setAlert] = useState(null);
-  const [error, setError] = useState(null);
 
-  const API_URL = "https://know-before-you-go-nasa-space-25.vercel.app/api/events";
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const provinces = ["Cairo", "Giza", "Alexandria", "Luxor", "Aswan"];
-  const recurrenceOptions = ["none", "daily", "weekly", "monthly"];
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(`${API_URL}/api/events/${eventId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to fetch event");
+
+        setTitle(data.data.title);
+        setDate(data.data.date);
+        setRecurrence(data.data.recurrence);
+        setNotes(data.data.notes);
+        setLocation({
+          lat: data.data.location.lat,
+          lng: data.data.location.lon,
+        });
+      } catch (err) {
+        console.error(err);
+        alert("Error loading event details");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvent();
+  }, [eventId, API_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setError(null);
-    setAlert(null);
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    if (!formData.title || !formData.date || !formData.province) {
-      setError("Please fill in all required fields (Title, Date, Province).");
+    if (!location?.lat || !location?.lng) {
+      alert("Please select a location on the map.");
       setSubmitting(false);
       return;
     }
 
+    const payload = {
+      title,
+      date,
+      recurrence,
+      notes,
+      location: { lat: location.lat, lon: location.lng },
+    };
+
     try {
-      const res = await fetch(`${API_URL}/edit/${eventId}`, {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/api/events/${eventId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to update event");
 
-      if (data.status === "success") {
-        setAlert({ message: "تم تحديث الحدث بنجاح! ✅", type: "success" });
-        setTimeout(() => navigate("/home"), 2000);
-      } else {
-        setError(data.message || "فشل تحديث الحدث.");
-        setAlert({ message: data.message || "فشل تحديث الحدث.", type: "error" });
-      }
+      alert("Event updated successfully!");
+      navigate(`/events/${eventId}/weather`);
     } catch (err) {
       console.error(err);
-      setError("حدث خطأ في الشبكة.");
-      setAlert({ message: "حدث خطأ في الشبكة.", type: "error" });
+      alert("Error updating event");
     } finally {
       setSubmitting(false);
     }
   };
 
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen text-lg">
+        Loading event details...
+      </div>
+    );
+
   return (
-    <div className="min-h-screen font-sans p-6 bg-gradient-to-br from-[#5076B4] to-[#C48EF1] text-gray-900 dark:from-[#002E78] dark:to-[#160524] dark:text-white">
-      {alert && <AlertBox message={alert.message} type={alert.type} onClose={() => setAlert(null)} />}
+    <div className="min-h-screen bg-gradient-to-br from-[#5076B4] to-[#C48EF1] dark:from-[#002E78] dark:to-[#160524] text-gray-900 dark:text-white flex flex-col items-center justify-center p-8 transition-all duration-500">
+      <h2 className="text-3xl font-extrabold mb-10 drop-shadow-md text-center">
+        Edit Event
+      </h2>
 
-      <div className="max-w-xl mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl">
-        <h1 className="text-3xl font-extrabold mb-8 text-center text-[#5076B4] dark:text-white">
-          <FaPencilAlt className="inline mr-3" /> Edit Event
-        </h1>
+      <div className="flex flex-col lg:flex-row gap-8 w-full max-w-6xl bg-white/30 dark:bg-white/5 backdrop-blur-lg p-8 rounded-3xl shadow-2xl border border-white/10 transition-all">
+        {/* Left Side - Map */}
+        <div className="w-full lg:w-1/2 h-80 lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+          <MapContainer
+            center={
+              location ? [location.lat, location.lng] : [30.0, 31.0]
+            }
+            zoom={6}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; OpenStreetMap contributors"
+            />
+            <LocationMarker
+              position={location}
+              onSelect={(loc) => setLocation(loc)}
+            />
+          </MapContainer>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title */}
+        <form
+          onSubmit={handleSubmit}
+          className="w-full lg:w-1/2 flex flex-col gap-5 justify-between"
+        >
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Event Title</label>
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Title
+            </label>
             <input
               type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Event Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Date */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                <FaCalendarAlt className="inline mr-2 text-red-400" /> Date
-              </label>
-              <input
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200"
-              />
-            </div>
-
-            {/* Province */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                <FaMapMarkerAlt className="inline mr-2 text-green-400" /> Province
-              </label>
-              <select
-                name="province"
-                value={formData.province}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200"
-              >
-                {provinces.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-            </div>
+          <div>
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Date & Time
+            </label>
+            <input
+              type="datetime-local"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
+              required
+            />
           </div>
 
-          {/* Recurrence */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              <FaSync className="inline mr-2 text-yellow-400" /> Recurrence
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Recurrence
             </label>
-            <select name="recurrence" value={formData.recurrence} onChange={handleChange} className="w-full px-4 py-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white transition duration-200">
-              {recurrenceOptions.map((opt) => (
-                <option key={opt} value={opt}>{opt.charAt(0).toUpperCase() + opt.slice(1)}</option>
-              ))}
+            <select
+              value={recurrence}
+              onChange={(e) => setRecurrence(e.target.value)}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
+            >
+              <option value="none">None</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
             </select>
           </div>
 
-          {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Notes
+            </label>
             <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows="4"
-              placeholder="Notes about the event..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white resize-none transition duration-200"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={4}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
             />
           </div>
 
-          {/* Error */}
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-          {/* Buttons */}
-          <div className="flex justify-between gap-4 pt-4">
-            <button type="button" onClick={() => navigate("/home")} className="flex-1 px-6 py-3 border rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-              Cancel
-            </button>
-            <button type="submit" disabled={submitting} className="flex-1 px-6 py-3 bg-[#5076B4] text-white rounded-full hover:bg-[#406090] transition disabled:opacity-50">
-              {submitting ? "Updating..." : "Save Changes"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="mt-2 py-2 bg-gradient-to-br from-[#5076B4] to-[#C48EF1] dark:from-[#002E78] dark:to-[#160524] text-gray-900 dark:text-white font-semibold hover:opacity-90 transition-all"
+          >
+            {submitting ? "Updating..." : "Update Event"}
+          </button>
         </form>
       </div>
     </div>

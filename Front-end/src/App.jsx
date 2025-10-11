@@ -15,6 +15,9 @@ import EventDetails from "./Components/Event/EventDetails.jsx";
 import Favorites from "./Components/favorites/Favorites.jsx";
 import EventWeather from "./Components/EventWeather/EventWeather.jsx";
 import EditEvent from "./Components/Event/EditEvent.jsx";
+import ShowProfile from "./Components/Profile/ShowProfile.jsx";
+import EditProfile from "./Components/Profile/EditProfile.jsx";
+import EventDetailsStatic from "./Components/Event/Event.jsx";
 
 function App() {
   return (
@@ -32,7 +35,11 @@ function App() {
             <Route path="/events/:eventId" element={<EventDetails />} />
             <Route path="/favorites" element={<ProtectedRouting><Favorites /></ProtectedRouting>}/>
             <Route path="/events/:eventId/weather" element={<ProtectedRouting><EventWeather /></ProtectedRouting>} />
-            <Route path="/events/:eventId/edit" element={<ProtectedRouting><EditEvent /></ProtectedRouting> }/>
+            <Route path="/events/edit/:eventId" element={<ProtectedRouting><EditEvent /></ProtectedRouting> }/>
+            <Route path="/profile" element={<ProtectedRouting><ShowProfile /></ProtectedRouting>} />
+            <Route path="/profile/edit" element={<ProtectedRouting><EditProfile /></ProtectedRouting>} />
+            <Route path="/event" element={<ProtectedRouting>< EventDetailsStatic/></ProtectedRouting>} />
+
 
 
             <Route

@@ -18,7 +18,7 @@ export async function registerUser(username, email, password, province) {
     console.log("response:", data);
 
     if (!res.ok) {
-      throw new Error(data.data?.email || data.message || "Registration failed ❌");
+      throw new Error(data.data?.email || data.message || "Registration failed ");
     }
 
     return data;

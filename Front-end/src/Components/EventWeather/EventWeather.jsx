@@ -30,7 +30,7 @@ export default function EventWeather() {
           return;
         }
 
-        const url = `${API_URL}/api/events/${encodeURIComponent(eventId)}/weather`;
+        const url = `${API_URL}/api/events/${eventId}/weather`;
         console.log("Fetching event weather URL:", url);
 
         const res = await fetch(url, {

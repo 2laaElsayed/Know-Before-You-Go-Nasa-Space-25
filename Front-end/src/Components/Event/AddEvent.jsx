@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, useMapEvents, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -17,56 +17,16 @@ function LocationMarker({ position, onSelect }) {
   return markerPos ? <Marker position={markerPos} /> : null;
 }
 
-export default function EditEvent() {
+export default function CreateEvent() {
   const navigate = useNavigate();
-  const { eventId } = useParams();
-
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [recurrence, setRecurrence] = useState("none");
   const [notes, setNotes] = useState("");
   const [location, setLocation] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL;
-
-  // جلب بيانات الحدث
-  useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const res = await fetch(`${API_URL}/api/events/edit/${eventId}`);
-        console.log("Fetch URL:", res.url);
-        console.log("Status:", res.status);
-
-        if (!res.ok) throw new Error("Failed to fetch event");
-
-        const data = await res.json();
-        const event = data.data?.event;
-
-        if (event) {
-          setTitle(event.title || "");
-          setDate(event.date ? event.date.substring(0, 16) : "");
-          setRecurrence(event.recurrence || "none");
-          setNotes(event.notes || "");
-          if (event.location?.lat && event.location?.lon) {
-            setLocation({ lat: event.location.lat, lng: event.location.lon });
-          }
-        } else {
-          alert("Event not found");
-          navigate("/");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Error fetching event");
-        navigate("/");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEvent();
-  }, [eventId, API_URL, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,101 +47,122 @@ export default function EditEvent() {
     };
 
     try {
-      const res = await fetch(`${API_URL}/api/events/edit/${eventId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/api/events/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
 
-      console.log("PUT URL:", res.url);
-      console.log("PUT Status:", res.status);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to create event");
+  navigate("/home");
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to update event");
+} catch (err) {
+  console.error(err);
+  alert("Error creating event");
+} finally {
+  setSubmitting(false);
+}
 
-      alert("Event updated successfully!");
-      navigate(`/events/${eventId}/weather`);
-    } catch (err) {
-      console.error(err);
-      alert("Error updating event");
-    } finally {
-      setSubmitting(false);
-    }
+
   };
 
-  if (loading) return <p className="p-6 text-white">Loading event...</p>;
-
   return (
-    <div className="p-6 bg-gradient-to-br from-[#002E78] to-[#160524] dark:from-[#C48EF1] dark:to-[#5076B4] min-h-screen">
-      <h2 className="text-2xl mb-4 text-white">Edit Event</h2>
+    <div className="min-h-screen bg-gradient-to-br from-[#5076B4] to-[#C48EF1] dark:from-[#002E78] dark:to-[#160524] text-gray-900 dark:text-white flex flex-col items-center justify-center p-8 transition-all duration-500">
+      <h2 className="text-3xl font-extrabold mb-10 drop-shadow-md text-center">
+        Create New Event
+      </h2>
 
-      <div className="mb-4 h-64">
-        <MapContainer
-          center={location ? [location.lat, location.lng] : [30.0, 31.0]}
-          zoom={6}
-          style={{ height: "100%" }}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
-          />
-          <LocationMarker position={location} onSelect={(loc) => setLocation(loc)} />
-        </MapContainer>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="text-white">Title:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full border rounded p-2 bg-white/20 text-white"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="text-white">Date & Time:</label>
-          <input
-            type="datetime-local"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full border rounded p-2 bg-white/20 text-white"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="text-white">Recurrence:</label>
-          <select
-            value={recurrence}
-            onChange={(e) => setRecurrence(e.target.value)}
-            className="w-full border rounded p-2 bg-white/20 text-white"
+      <div className="flex flex-col lg:flex-row gap-8 w-full max-w-6xl bg-white/30 dark:bg-white/5 backdrop-blur-lg p-8 rounded-3xl shadow-2xl border border-white/10 transition-all">
+        
+        {/* Left Side - Map */}
+        <div className="w-full lg:w-1/2 h-80 lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+          <MapContainer
+            center={[30.0, 31.0]}
+            zoom={6}
+            style={{ height: "100%", width: "100%" }}
           >
-            <option value="none">None</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-          </select>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; OpenStreetMap contributors"
+            />
+            <LocationMarker onSelect={(loc) => setLocation(loc)} />
+          </MapContainer>
         </div>
 
-        <div>
-          <label className="text-white">Notes:</label>
-          <textarea
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="w-full border rounded p-2 bg-white/20 text-white"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={submitting}
-          className="px-4 py-2 bg-gradient-to-r from-[#002E78] to-[#160524] text-white rounded hover:opacity-90 transition"
+        {/* Right Side - Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="w-full lg:w-1/2 flex flex-col gap-5 justify-between"
         >
-          {submitting ? "Updating..." : "Save Changes"}
-        </button>
-      </form>
+          <div>
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Title
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
+              required
+              placeholder="Event title..."
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Date & Time
+            </label>
+            <input
+              type="datetime-local"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Recurrence
+            </label>
+            <select
+              value={recurrence}
+              onChange={(e) => setRecurrence(e.target.value)}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
+            >
+              <option value="none">None</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-semibold opacity-80">
+              Notes
+            </label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={4}
+              className="w-full border border-white/20 rounded-lg p-2 bg-white/40 dark:bg-white/10 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#5076B4]"
+              placeholder="Add event notes..."
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="mt-2 py-2  bg-gradient-to-br from-[#5076B4] to-[#C48EF1] dark:from-[#002E78] dark:to-[#160524] text-gray-900 dark:text-white font-semibold hover:opacity-90 transition-all"
+          >
+            {submitting ? "Creating..." : "Create Event"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -124,7 +124,7 @@ https://github.com/user-attachments/assets/279083fc-11bf-4ecb-b8b9-9196c24e1d6a
 * `/api//events/favorites` → Get all events in the logged-in user's favorites.
 
 ---
-## ⚛️ Frontend Development
+## Frontend Development
 
 - **React.js** – for building dynamic and interactive user interfaces.  
 - **React Router DOM** – for routing, navigation, and implementing Protected Routes.  
@@ -133,27 +133,25 @@ https://github.com/user-attachments/assets/279083fc-11bf-4ecb-b8b9-9196c24e1d6a
 - **React Icons** – for adding consistent UI icons.  
 - **Tailwind CSS** *(or CSS Modules / Styled Components)* – for styling the dashboard and pages.  
   
-# 🗺️ Maps & Location
+#  Maps & Location
 
 - **Leaflet.js** – for displaying an interactive map.  
 - **React-Leaflet** – for integrating Leaflet maps within React components.  
 - **OpenStreetMap / Mapbox Tiles** – as a base map layer (for location visualization).  
 - **Geolocation API** – to allow users to select or detect locations.  
 
--
-# 🌦️ Weather & Events
+#  Weather & Events
 
 - **Custom Weather API (team-built)** – for fetching real-time weather predictions and event-related insights.  
 - **Chart.js / Recharts / D3.js** *(if used)* – for data visualization (temperature trends, rain probability, etc.).  
 - **Dynamic Dashboard Components** – for showing 3-day forecasts, rain probability, and event-specific conditions.  
---
-# 🔐 Authentication
+
+#  Authentication
 
 - **JWT-based Authentication API** *(via backend)*.  
 - **Login & Register pages** connected with the backend endpoints.  
 - **Protected Routing** – ensures only authenticated users access certain pages.  
---
-# ⭐ Features
+#  Features
 
 - **Interactive Weather Dashboard** (today + 3-day forecast).  
 - **Add Event** feature with date, time, and location selection on map.  

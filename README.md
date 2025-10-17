@@ -124,11 +124,51 @@ https://github.com/user-attachments/assets/279083fc-11bf-4ecb-b8b9-9196c24e1d6a
 * `/api//events/favorites` → Get all events in the logged-in user's favorites.
 
 ---
+## ⚛️ Frontend Development
+
+- **React.js** – for building dynamic and interactive user interfaces.  
+- **React Router DOM** – for routing, navigation, and implementing Protected Routes.  
+- **Axios / Fetch API** – for handling API requests and data fetching.  
+- **Context API / useState / useEffect** – for managing state and user preferences (e.g. dark/light mode).  
+- **React Icons** – for adding consistent UI icons.  
+- **Tailwind CSS** *(or CSS Modules / Styled Components)* – for styling the dashboard and pages.  
+  
+# 🗺️ Maps & Location
+
+- **Leaflet.js** – for displaying an interactive map.  
+- **React-Leaflet** – for integrating Leaflet maps within React components.  
+- **OpenStreetMap / Mapbox Tiles** – as a base map layer (for location visualization).  
+- **Geolocation API** – to allow users to select or detect locations.  
+
+-
+# 🌦️ Weather & Events
+
+- **Custom Weather API (team-built)** – for fetching real-time weather predictions and event-related insights.  
+- **Chart.js / Recharts / D3.js** *(if used)* – for data visualization (temperature trends, rain probability, etc.).  
+- **Dynamic Dashboard Components** – for showing 3-day forecasts, rain probability, and event-specific conditions.  
+--
+# 🔐 Authentication
+
+- **JWT-based Authentication API** *(via backend)*.  
+- **Login & Register pages** connected with the backend endpoints.  
+- **Protected Routing** – ensures only authenticated users access certain pages.  
+--
+# ⭐ Features
+
+- **Interactive Weather Dashboard** (today + 3-day forecast).  
+- **Add Event** feature with date, time, and location selection on map.  
+- **EventWeather Page** – displays weather conditions for selected event location/time.  
+- **Favorites Section** – lets users save favorite events/locations.  
+- **Dark / Light Mode Toggle** – user preference saved dynamically.  
+- **Real-time Weather Insights** – fetched from backend & displayed visually.  
+
+---
+
 
 ## 8. Architecture
 <img width="1267" height="766" alt="image" src="https://github.com/user-attachments/assets/5de2aa5c-6443-4493-9f23-003973110229" />
 
-* **Frontend:** React (interactive dashboard).
+* **Frontend:** React.js .
 * **Backend:** Node.js/Express (handles API calls).
 * **Data Layer:** Processed NASA datasets.
 * **ML Models:** Probability estimations (Python, scikit-learn / statsmodels).
@@ -167,9 +207,8 @@ https://github.com/user-attachments/assets/279083fc-11bf-4ecb-b8b9-9196c24e1d6a
 - Update backend `.env` with `ML_URL`.  
 
 ### Frontend (Netlify)
-- Build frontend (React/Vue/Angular) with production command (`npm run build` or framework equivalent).  
+- Build frontend (React) with production command (`npm run dev`).  
 - Deploy build folder to Netlify.  
-- Set environment variables in Netlify (`API_BASE_URL`, etc.) to point to backend API on Vercel.  
 - Configure redirect rules in `_redirects` file if needed:  
 
 ## 11. Acknowledgments 🙌

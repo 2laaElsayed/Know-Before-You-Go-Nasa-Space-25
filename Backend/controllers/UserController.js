@@ -13,6 +13,7 @@ const getThreeDayForecastForUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
+    
     const user = await User.findById(userId);
     if (!user) {
       return res.status(Constants.STATUSCODE.NOT_FOUND).json(
